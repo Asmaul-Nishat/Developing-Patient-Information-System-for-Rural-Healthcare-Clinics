@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Patient Registration Form</title>
+  <style>
+    :root {
+      --bg: #0f172a;        
+      --card: #111827;       
+      --muted: #94a3b8;     
+      --text: #e5e7eb;       
+      --accent: #22d3ee;     
+      --accent-2: #38bdf8;   
+      --ring: rgba(34, 211, 238, 0.5);
+      --error: #fca5a5;      
+      --ok: #86efac;         
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      background: radial-gradient(1200px 600px at 20% -10%, rgba(56,189,248,.15), transparent),
+                  radial-gradient(1000px 500px at 90% 10%, rgba(34,211,238,.15), transparent),
+                  var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 860px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      border: 1px solid rgba(148,163,184,.2);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      backdrop-filter: blur(6px);
+      padding: 28px;
+    }
+
+    h1 {
+      margin: 0 0 4px;
+      font-size: clamp(24px, 4vw, 34px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    p.subtitle {
+      margin: 0 0 24px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    form {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 640px) {
+      .grid.sm-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid.sm-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    label { display: block; font-size: 14px; margin-bottom: 6px; color: var(--muted); }
+
+    .field { position: relative; }
+    .field input, .field select {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(148,163,184,.25);
+      background: rgba(2,6,23,.6);
+      color: var(--text);
+      outline: none;
+      transition: border-color .15s ease, box-shadow .15s ease, transform .06s ease;
+    }
+
+    .field input:focus, .field select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px var(--ring);
+    }
+
+    .field small.hint { color: var(--muted); display: block; margin-top: 6px; font-size: 12px; }
+    .error { color: var(--error); font-size: 12px; margin-top: 6px; display: none; }
+
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+
+    button {
+      appearance: none;
+      border: 1px solid rgba(148,163,184,.2);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      color: var(--text);
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .08s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+
+    button:hover { border-color: rgba(148,163,184,.4); box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+    button:active { transform: translateY(1px); }
+
+    .btn-primary { border-color: rgba(56,189,248,.6); }
+
+    .status {
+      margin-top: 16px;
+      padding: 12px 14px;
+      border: 1px solid rgba(148,163,184,.25);
+      border-radius: 12px;
+      background: rgba(2,6,23,.45);
+      display: none;
+      font-size: 14px;
+    }
+
+    .status.ok { display: block; border-color: rgba(134,239,172,.5); }
+    .status.err { display: block; border-color: rgba(252,165,165,.5); }
+
+    .output {
+      margin-top: 14px;
+      background: rgba(2,6,23,.6);
+      border: 1px dashed rgba(148,163,184,.35);
+      border-radius: 12px;
+      padding: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 13px;
+      color: var(--muted);
+      white-space: pre-wrap;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card" role="region" aria-labelledby="formTitle">
+      <h1 id="formTitle">Patient Registration</h1>
+      <p class="subtitle">Fill out the form below. Required fields are marked with <strong>*</strong>.</p>
+
+      <form id="patientForm" novalidate>
+        <div class="grid sm-2">
+          <div class="field">
+            <label for="fullName">Full Name *</label>
+            <input id="fullName" name="name" type="text" placeholder="type your name" required autocomplete="name" />
+            <div class="error" id="errName">Please enter the patient's full name.</div>
+          </div>
+
+          <div class="field">
+            <label for="idNo">ID No. *</label>
+            <input id="idNo" name="idNo" type="text" placeholder="type your ID number" required />
+            <div class="error" id="errId">Please provide a valid ID number.</div>
+          </div>
+        </div>
+
+        <div class="grid sm-3">
+          <div class="field">
+            <label for="dob">Date of Birth *</label>
+            <input id="dob" name="dob" type="date" required />
+            <small class="hint">Choosing DOB will auto-calculate Age.</small>
+            <div class="error" id="errDob">Please select a valid date of birth.</div>
+          </div>
+
+          <div class="field">
+            <label for="age">Age *</label>
+            <input id="age" name="age" type="number" min="0" max="120" placeholder="type your age" required />
+            <div class="error" id="errAge">Please enter an age between 0 and 120.</div>
+          </div>
+
+          <div class="field">
+            <label for="gender">Gender *</label>
+            <select id="gender" name="gender" required>
+              <option value="" disabled selected>Select gender</option>
+              <option>Female</option>
+              <option>Male</option>
+              <option>Other</option>
+              <option>Prefer not to say</option>
+            </select>
+            <div class="error" id="errGender">Please select a gender option.</div>
+          </div>
+        </div>
+
+        <div class="grid sm-2">
+          <div class="field">
+            <label for="address">Address *</label>
+            <input id="address" name="address" type="text" placeholder="House, Street, City" required autocomplete="street-address" />
+            <div class="error" id="errAddress">Please enter the address.</div>
+          </div>
+
+          <div class="field">
+            <label for="contact">Contact *</label>
+            <input id="contact" name="contact" type="text" placeholder="Phone number" required pattern="[+\d][\d\s-]{6,}" autocomplete="tel" />
+            <small class="hint">Digits, spaces, dashes allowed (min 7 characters).</small>
+            <div class="error" id="errContact">Please enter a valid contact number.</div>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <button type="reset" id="resetBtn">Reset</button>
+          <button type="submit" class="btn-primary">Submit</button>
+        </div>
+
+        <div class="status" id="status"></div>
+        <pre class="output" id="output"></pre>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('patientForm');
+    const statusEl = document.getElementById('status');
+    const outputEl = document.getElementById('output');
+
+    const el = (id) => document.getElementById(id);
+
+    
+    el('dob').addEventListener('change', (e) => {
+      const dob = new Date(e.target.value);
+      if (!isNaN(dob)) {
+        const today = new Date();
+        let age = today.getFullYear() - dob.getFullYear();
+        const m = today.getMonth() - dob.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
+        if (age >= 0 && age <= 120) el('age').value = age;
+      }
+    });
+
+
+    function setError(id, show) {
+      const node = el(id);
+      if (node) node.style.display = show ? 'block' : 'none';
+    }
+
+    function validate() {
+      let ok = true;
+
+      
+      if (!el('fullName').value.trim()) { setError('errName', true); ok = false; } else setError('errName', false);
+
+      if (!el('idNo').value.trim()) { setError('errId', true); ok = false; } else setError('errId', false);
+
+      const dobVal = el('dob').value;
+      const dob = new Date(dobVal);
+      const invalidDob = !dobVal || isNaN(dob) || dob > new Date();
+      if (invalidDob) { setError('errDob', true); ok = false; } else setError('errDob', false);
+
+    
+      const age = Number(el('age').value);
+      if (!(age >= 0 && age <= 120)) { setError('errAge', true); ok = false; } else setError('errAge', false);
+
+     
+      if (!el('gender').value) { setError('errGender', true); ok = false; } else setError('errGender', false);
+
+      if (!el('address').value.trim()) { setError('errAddress', true); ok = false; } else setError('errAddress', false);
+
+      const contact = el('contact');
+      if (!contact.checkValidity()) { setError('errContact', true); ok = false; } else setError('errContact', false);
+
+      return ok;
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      statusEl.className = 'status';
+      outputEl.style.display = 'none';
+
+      if (!validate()) {
+        statusEl.textContent = 'Please fix the highlighted fields and try again.';
+        statusEl.classList.add('err');
+        return;
+      }
+
+  
+      const data = {
+        name: el('fullName').value.trim(),
+        idNo: el('idNo').value.trim(),
+        dob: el('dob').value,
+        age: Number(el('age').value),
+        gender: el('gender').value,
+        address: el('address').value.trim(),
+        contact: el('contact').value.trim(),
+        submittedAt: new Date().toISOString()
+      };
+
+     
+      const key = `patient:${data.idNo}`;
+      try { localStorage.setItem(key, JSON.stringify(data)); } catch (err) {}
+
+      statusEl.textContent = '✅ Registration saved locally (demo). Replace with your backend call as needed.';
+      statusEl.classList.add('ok');
+
+      outputEl.textContent = JSON.stringify(data, null, 2);
+      outputEl.style.display = 'block';
+
+    
+      statusEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      statusEl.className = 'status';
+      statusEl.textContent = '';
+      outputEl.style.display = 'none';
+      document.querySelectorAll('.error').forEach(e => e.style.display = 'none');
+    });
+  </script>
+</body>
+</html>
