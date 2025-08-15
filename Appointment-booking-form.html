@@ -1,120 +1,73 @@
+<!-- Page: Appointment Booking Form (Styled like Patient Register Form) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Appointment Booking Form</title>
+  <title>Appointment Booking</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f0f4f8;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-    .form-container {
-      background: #fff;
-      padding: 20px 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 500px;
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      color: #333;
-    }
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-      color: #555;
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 14px;
-    }
-    input:focus, select:focus, textarea:focus {
-      border-color: #007bff;
-      outline: none;
-      box-shadow: 0 0 5px rgba(0,123,255,0.5);
-    }
-    .btn {
-      width: 100%;
-      padding: 10px;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    .btn:hover {
-      background-color: #0056b3;
-    }
-    .error {
-      color: red;
-      font-size: 12px;
-      display: none;
-      margin-top: -10px;
-      margin-bottom: 10px;
-    }
+    body { margin:0; font-family:Arial,sans-serif; background:#0f172a; display:flex; justify-content:center; align-items:center; padding:40px 0; color:#e5e7eb; }
+    .form-container { background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)); border:1px solid rgba(148,163,184,.2); border-radius:20px; box-shadow:0 20px 60px rgba(0,0,0,.35); padding:30px; width:100%; max-width:500px; }
+    h2 { text-align:center; margin-bottom:20px; font-weight:800; font-size:28px; color:#e5e7eb; }
+    label { display:block; margin-bottom:5px; font-weight:bold; color:#94a3b8; }
+    input, select { width:100%; padding:12px; margin-bottom:15px; border-radius:12px; border:1px solid rgba(148,163,184,.25); background:rgba(2,6,23,.6); color:#e5e7eb; font-size:14px; outline:none; }
+    input:focus, select:focus { border-color:#22d3ee; box-shadow:0 0 0 4px rgba(34, 211, 238,0.5); }
+    .btn { width:100%; padding:12px; background:#22d3ee; color:#0f172a; border:none; border-radius:12px; font-size:16px; font-weight:600; cursor:pointer; }
+    .btn:hover { background:#38bdf8; }
+    .radio-group { display:flex; gap:20px; margin-bottom:15px; align-items:center; }
+    .error { color:#f87171; font-size:12px; display:none; margin-bottom:10px; }
   </style>
 </head>
 <body>
   <div class="form-container">
-    <h2>Appointment Booking Form</h2>
+    <h2>Appointment Booking</h2>
     <form id="appointmentForm" novalidate>
       <label for="patientId">Patient ID *</label>
-      <input type="text" id="patientId" required>
+      <input type="text" id="patientId" name="patientId" required>
       <div class="error" id="errPatientId">Please enter a valid Patient ID.</div>
 
-      <label for="date">Date *</label>
-      <input type="date" id="date" required>
+      <label for="appointmentDate">Date *</label>
+      <input type="date" id="appointmentDate" name="appointmentDate" required>
       <div class="error" id="errDate">Please select a date.</div>
 
-      <label for="time">Time *</label>
-      <input type="time" id="time" required>
+      <label for="appointmentTime">Time *</label>
+      <input type="time" id="appointmentTime" name="appointmentTime" required>
       <div class="error" id="errTime">Please select a time.</div>
 
       <label for="doctor">Doctor *</label>
-      <select id="doctor" required>
+      <select id="doctor" name="doctor" required>
         <option value="" disabled selected>Select Doctor</option>
-        <option>Dr. John Smith</option>
-        <option>Dr. Sarah Johnson</option>
-        <option>Dr. Emily Brown</option>
-        <option>Dr. Michael Lee</option>
+        <option>Dr. Smith</option>
+        <option>Dr. Johnson</option>
+        <option>Dr. Williams</option>
       </select>
       <div class="error" id="errDoctor">Please select a doctor.</div>
 
       <label for="reason">Reason for Visit *</label>
-      <textarea id="reason" rows="3" required></textarea>
-      <div class="error" id="errReason">Please enter the reason for the visit.</div>
+      <textarea id="reason" name="reason" rows="3" required></textarea>
+      <div class="error" id="errReason">Please enter the reason for visit.</div>
 
       <button type="submit" class="btn">Book Appointment</button>
     </form>
   </div>
+
   <script>
     const form = document.getElementById('appointmentForm');
+
     function showError(id, show) {
       document.getElementById(id).style.display = show ? 'block' : 'none';
     }
+
     function validateForm() {
       let valid = true;
       if (!document.getElementById('patientId').value.trim()) { showError('errPatientId', true); valid = false; } else { showError('errPatientId', false); }
-      if (!document.getElementById('date').value) { showError('errDate', true); valid = false; } else { showError('errDate', false); }
-      if (!document.getElementById('time').value) { showError('errTime', true); valid = false; } else { showError('errTime', false); }
+      if (!document.getElementById('appointmentDate').value) { showError('errDate', true); valid = false; } else { showError('errDate', false); }
+      if (!document.getElementById('appointmentTime').value) { showError('errTime', true); valid = false; } else { showError('errTime', false); }
       if (!document.getElementById('doctor').value) { showError('errDoctor', true); valid = false; } else { showError('errDoctor', false); }
       if (!document.getElementById('reason').value.trim()) { showError('errReason', true); valid = false; } else { showError('errReason', false); }
       return valid;
     }
+
     form.addEventListener('submit', function(e) {
       e.preventDefault();
       if (validateForm()) {
