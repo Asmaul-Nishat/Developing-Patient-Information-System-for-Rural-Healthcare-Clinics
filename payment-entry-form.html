@@ -1,0 +1,62 @@
+<!-- Page 4: Payment Entry Form -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Payment Entry</title>
+  <style>
+    body { margin:0; font-family:Arial,sans-serif; background:#0f172a; display:flex; justify-content:center; align-items:center; padding:40px 0; color:#e5e7eb; }
+    .form-container { background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)); border:1px solid rgba(148,163,184,.2); border-radius:20px; box-shadow:0 20px 60px rgba(0,0,0,.35); padding:30px; width:100%; max-width:500px; }
+    h2 { text-align:center; margin-bottom:20px; font-weight:800; font-size:28px; color:#e5e7eb; }
+    label { display:block; margin-bottom:5px; font-weight:bold; color:#94a3b8; }
+    input, select { width:100%; padding:12px; margin-bottom:15px; border-radius:12px; border:1px solid rgba(148,163,184,.25); background:rgba(2,6,23,.6); color:#e5e7eb; font-size:14px; outline:none; }
+    input:focus, select:focus { border-color:#22d3ee; box-shadow:0 0 0 4px rgba(34, 211, 238,0.5); }
+    .btn { width:100%; padding:12px; background:#22d3ee; color:#0f172a; border:none; border-radius:12px; font-size:16px; font-weight:600; cursor:pointer; }
+    .btn:hover { background:#38bdf8; }
+    .radio-group { display:flex; gap:20px; margin-bottom:15px; align-items:center; }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Payment Entry</h2>
+    <form>
+      <label for="patientPaymentId">Patient ID</label>
+      <input type="text" id="patientPaymentId">
+
+      <label for="paymentDate">Date</label>
+      <input type="date" id="paymentDate">
+
+      <label for="amount">Amount</label>
+      <input type="number" id="amount">
+
+      <label for="paymentType">Choose Payment Method:</label>
+      <select id="paymentType">
+        <option value="">Select</option>
+        <option value="show">Show Options</option>
+      </select>
+
+      <div class="radio-group" id="paymentOptions" style="display:none;">
+        <label><input type="radio" name="method" value="Cash"> Cash</label>
+        <label><input type="radio" name="method" value="Card"> Card</label>
+        <label><input type="radio" name="method" value="Online"> Online</label>
+      </div>
+
+      <button type="submit" class="btn">Submit Payment</button>
+    </form>
+  </div>
+
+  <script>
+    const paymentType = document.getElementById('paymentType');
+    const paymentOptions = document.getElementById('paymentOptions');
+
+    paymentType.addEventListener('change', function() {
+      if (this.value === 'show') {
+        paymentOptions.style.display = 'flex';
+      } else {
+        paymentOptions.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
