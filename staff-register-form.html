@@ -1,0 +1,45 @@
+<!-- Page 3: Staff Registration Form -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Staff Registration</title>
+  <style>
+    body { margin:0; font-family:Arial,sans-serif; background:#0f172a; display:flex; justify-content:center; align-items:center; padding:40px 0; color:#e5e7eb; }
+    .form-container { background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)); border:1px solid rgba(148,163,184,.2); border-radius:20px; box-shadow:0 20px 60px rgba(0,0,0,.35); padding:30px; width:100%; max-width:500px; }
+    h2 { text-align:center; margin-bottom:20px; font-weight:800; font-size:28px; color:#e5e7eb; }
+    label { display:block; margin-bottom:5px; font-weight:bold; color:#94a3b8; }
+    input, select { width:100%; padding:12px; margin-bottom:15px; border-radius:12px; border:1px solid rgba(148,163,184,.25); background:rgba(2,6,23,.6); color:#e5e7eb; font-size:14px; outline:none; }
+    input:focus, select:focus { border-color:#22d3ee; box-shadow:0 0 0 4px rgba(34, 211, 238,0.5); }
+    .btn { width:100%; padding:12px; background:#22d3ee; color:#0f172a; border:none; border-radius:12px; font-size:16px; font-weight:600; cursor:pointer; }
+    .btn:hover { background:#38bdf8; }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Staff Registration</h2>
+    <form>
+      <label for="staffName">Name</label>
+      <input type="text" id="staffName">
+
+      <label for="role">Role</label>
+      <select id="role">
+        <option value="" disabled selected>Select Role</option>
+        <option>Doctor</option>
+        <option>Nurse</option>
+        <option>Receptionist</option>
+        <option>Admin</option>
+      </select>
+
+      <label for="qualification">Qualification</label>
+      <input type="text" id="qualification">
+
+      <label for="contact">Contact</label>
+      <input type="text" id="contact">
+
+      <button type="submit" class="btn">Register Staff</button>
+    </form>
+  </div>
+</body>
+</html>
