@@ -1,0 +1,81 @@
+<!-- Page: Medical Record Entry (Styled like Patient Register Form) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Medical Record Entry</title>
+  <style>
+    body { margin:0; font-family:Arial,sans-serif; background:#0f172a; display:flex; justify-content:center; align-items:center; padding:40px 0; color:#e5e7eb; }
+    .form-container { background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)); border:1px solid rgba(148,163,184,.2); border-radius:20px; box-shadow:0 20px 60px rgba(0,0,0,.35); padding:30px; width:100%; max-width:500px; }
+    h2 { text-align:center; margin-bottom:20px; font-weight:800; font-size:28px; color:#e5e7eb; }
+    label { display:block; margin-bottom:5px; font-weight:bold; color:#94a3b8; }
+    input, select, textarea { width:100%; padding:12px; margin-bottom:15px; border-radius:12px; border:1px solid rgba(148,163,184,.25); background:rgba(2,6,23,.6); color:#e5e7eb; font-size:14px; outline:none; }
+    input:focus, select:focus, textarea:focus { border-color:#22d3ee; box-shadow:0 0 0 4px rgba(34, 211, 238,0.5); }
+    .btn { width:100%; padding:12px; background:#22d3ee; color:#0f172a; border:none; border-radius:12px; font-size:16px; font-weight:600; cursor:pointer; }
+    .btn:hover { background:#38bdf8; }
+    .error { color:#f87171; font-size:12px; display:none; margin-bottom:10px; }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Medical Record Entry</h2>
+    <form id="medicalForm" novalidate>
+      <label for="patientId">Patient ID *</label>
+      <input type="text" id="patientId" name="patientId" required>
+      <div class="error" id="errPatientId">Please enter a valid Patient ID.</div>
+
+      <label for="symptoms">Symptoms *</label>
+      <textarea id="symptoms" name="symptoms" rows="3" required></textarea>
+      <div class="error" id="errSymptoms">Please enter the symptoms.</div>
+
+      <label for="diagnosis">Diagnosis *</label>
+      <select id="diagnosis" name="diagnosis" required>
+        <option value="" disabled selected>Select Diagnosis</option>
+        <option>Flu</option>
+        <option>COVID-19</option>
+        <option>Diabetes</option>
+        <option>Hypertension</option>
+        <option>Other</option>
+      </select>
+      <div class="error" id="errDiagnosis">Please select a diagnosis.</div>
+
+      <label for="treatment">Treatment *</label>
+      <textarea id="treatment" name="treatment" rows="3" required></textarea>
+      <div class="error" id="errTreatment">Please enter the treatment details.</div>
+
+      <label for="medicine">Medicine Prescribed *</label>
+      <textarea id="medicine" name="medicine" rows="3" required></textarea>
+      <div class="error" id="errMedicine">Please enter the prescribed medicine.</div>
+
+      <button type="submit" class="btn">Save Record</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('medicalForm');
+
+    function showError(id, show) {
+      document.getElementById(id).style.display = show ? 'block' : 'none';
+    }
+
+    function validateForm() {
+      let valid = true;
+      if (!document.getElementById('patientId').value.trim()) { showError('errPatientId', true); valid = false; } else { showError('errPatientId', false); }
+      if (!document.getElementById('symptoms').value.trim()) { showError('errSymptoms', true); valid = false; } else { showError('errSymptoms', false); }
+      if (!document.getElementById('diagnosis').value) { showError('errDiagnosis', true); valid = false; } else { showError('errDiagnosis', false); }
+      if (!document.getElementById('treatment').value.trim()) { showError('errTreatment', true); valid = false; } else { showError('errTreatment', false); }
+      if (!document.getElementById('medicine').value.trim()) { showError('errMedicine', true); valid = false; } else { showError('errMedicine', false); }
+      return valid;
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (validateForm()) {
+        alert('✅ Medical record saved successfully!');
+        form.reset();
+      }
+    });
+  </script>
+</body>
+</html>
