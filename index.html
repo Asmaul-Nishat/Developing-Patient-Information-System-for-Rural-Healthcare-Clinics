@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Rural Clinic | Patient Information System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* =========================
+       DESIGN TOKENS
+    ========================== */
+    :root{
+      --bg:#f6f9fc;
+      --surface:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --brand:#0d6efd;           /* primary blue */
+      --brand-600:#0b5ed7;
+      --accent:#10b981;          /* healthcare green */
+      --accent-700:#059669;
+      --danger:#ef4444;
+      --ring:rgba(13,110,253,.25);
+      --radius:14px;
+      --shadow:0 8px 28px rgba(16,24,40,.08);
+      --shadow-sm:0 4px 12px rgba(16,24,40,.08);
+      --max:1200px;
+    }
+
+    /* =========================
+       RESET / BASE
+    ========================== */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans Bengali",Arial,sans-serif;
+      background:var(--bg); color:var(--text); line-height:1.6;
+    }
+    img{max-width:100%;display:block}
+    a{text-decoration:none;color:inherit}
+    .container{max-width:var(--max);margin:0 auto;padding:0 1.25rem}
+
+    /* =========================
+       HEADER / NAV
+    ========================== */
+    .header{
+      position:sticky;top:0;z-index:1000;background:var(--surface);
+      box-shadow:0 1px 0 rgba(0,0,0,.06);
+    }
+    .nav{
+      height:64px; display:flex; align-items:center; justify-content:space-between; gap:1rem;
+    }
+    .brand{display:flex; align-items:center; gap:.6rem; font-weight:700}
+    .brand .logo{
+      width:32px;height:32px;border-radius:8px;display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--accent),var(--brand));
+      color:#fff;font-weight:800
+    }
+    .links{display:flex; gap:1rem; align-items:center}
+    .links a{padding:.5rem .75rem;border-radius:8px;color:#111827}
+    .links a:hover{background:#f1f5f9}
+    .cta{background:var(--brand);color:#fff;padding:.6rem 1rem;border-radius:10px;font-weight:600;box-shadow:var(--shadow-sm)}
+    .cta:hover{background:var(--brand-600)}
+    .lang{
+      display:flex;gap:.4rem;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden
+    }
+    .lang button{
+      background:#fff;border:0;padding:.45rem .65rem;cursor:pointer;font-weight:600;color:#111827
+    }
+    .lang button.active{background:#111827;color:#fff}
+    .menu{display:none;background:#eef2ff;border:0;padding:.5rem .7rem;border-radius:10px;font-weight:700}
+
+    @media (max-width: 900px){
+      .menu{display:inline-block}
+      .links{display:none;position:absolute;top:64px;left:0;right:0;background:var(--surface);border-bottom:1px solid #e5e7eb;padding:1rem;flex-direction:column}
+      .links.show{display:flex}
+      .links .cta{width:100%;text-align:center}
+      .lang{align-self:flex-start}
+    }
+
+    /* =========================
+       HERO
+    ========================== */
+    .hero{
+      background:
+        radial-gradient(1200px 600px at 85% -10%, rgba(13,110,253,.15), transparent 60%),
+        radial-gradient(1200px 600px at 10% -10%, rgba(16,185,129,.15), transparent 60%),
+        linear-gradient(180deg,#ffffff, #f4f8ff 60%, #f6f9fc);
+      padding:4rem 0 3rem;
+    }
+    .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:2rem}
+    .hero h1{font-size:clamp(1.8rem,3.6vw,3rem);line-height:1.2;margin-bottom:1rem;letter-spacing:-.02em}
+    .hero p{color:var(--muted);max-width:44ch;margin-bottom:1.25rem}
+    .hero-actions{display:flex; gap:.8rem; flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1.1rem;border-radius:12px;font-weight:600;border:1px solid transparent}
+    .btn.primary{background:var(--brand);color:#fff;box-shadow:var(--shadow-sm)}
+    .btn.primary:hover{background:var(--brand-600)}
+    .btn.ghost{background:#fff;border-color:#e5e7eb}
+    .btn.ghost:hover{border-color:#cbd5e1}
+    .hero-card{
+      background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1rem
+    }
+    .hero-card .stat{
+      display:flex;justify-content:space-between;background:#f8fafc;border-radius:12px;padding:.8rem 1rem;margin:.5rem 0
+    }
+    .badge{
+      display:inline-flex;align-items:center;gap:.4rem;padding:.25rem .6rem;border-radius:999px;font-size:.85rem;background:#ecfeff;color:#0369a1;font-weight:600
+    }
+    @media (max-width: 900px){ .hero-grid{grid-template-columns:1fr} }
+
+    /* =========================
+       SERVICES
+    ========================== */
+    .section{padding:3rem 0}
+    .section .title{text-align:center;margin-bottom:1rem;font-size:clamp(1.4rem,2.6vw,2rem)}
+    .section .sub{color:var(--muted);text-align:center;margin-bottom:2rem}
+    .grid{
+      display:grid;gap:1rem;grid-template-columns:repeat(12,1fr)
+    }
+    .service{
+      grid-column:span 3; background:#fff;border-radius:16px;box-shadow:var(--shadow-sm);padding:1.1rem;transition:.2s
+    }
+    .service:hover{transform:translateY(-4px)}
+    .service .icon{
+      width:44px;height:44px;border-radius:12px;display:grid;place-items:center;margin-bottom:.6rem;
+      background:linear-gradient(135deg,rgba(13,110,253,.1),rgba(16,185,129,.1));color:var(--brand)
+    }
+    .service h3{margin-bottom:.35rem;font-size:1.05rem}
+    .service p{color:var(--muted);font-size:.95rem}
+    @media (max-width: 1100px){ .service{grid-column:span 4} }
+    @media (max-width: 700px){ .service{grid-column:span 12} }
+
+    /* =========================
+       DOCTORS PREVIEW (Slider)
+    ========================== */
+    .slider-wrap{position:relative}
+    .slider{display:grid;grid-auto-flow:column;grid-auto-columns:calc(33.333% - .75rem);gap:1.125rem;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:.25rem}
+    .slide{scroll-snap-align:start;background:#fff;border-radius:16px;box-shadow:var(--shadow-sm);overflow:hidden;border:1px solid #eef2f7}
+    .doc-head{height:160px;background:linear-gradient(135deg,#dbeafe,#dcfce7);}
+    .doc-card{padding:1rem}
+    .doc-card h4{margin:.25rem 0}
+    .doc-meta{color:var(--muted);font-size:.92rem}
+    .doc-actions{display:flex;gap:.5rem;margin-top:.7rem}
+    .btn.small{padding:.55rem .8rem;border-radius:10px;font-size:.95rem}
+    .btn.outline{background:#fff;border-color:#dbe2ea}
+    .btn.success{background:var(--accent);color:#fff}
+    .slider::-webkit-scrollbar{height:8px}
+    .slider::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:999px}
+    .nav-btn{
+      position:absolute;top:40%;transform:translateY(-50%);border:0;background:#0f172a;color:#fff;opacity:.85;
+      padding:.6rem;border-radius:12px;cursor:pointer;display:grid;place-items:center
+    }
+    .nav-btn:hover{opacity:1}
+    .prev{left:-.25rem} .next{right:-.25rem}
+    @media (max-width: 1100px){ .slider{grid-auto-columns:calc(50% - .6rem)} }
+    @media (max-width: 700px){ .slider{grid-auto-columns:100%} .prev,.next{display:none} }
+
+    /* =========================
+       HOW IT WORKS / STATS / CTA
+    ========================== */
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+    .step{background:#fff;border-radius:16px;box-shadow:var(--shadow-sm);padding:1rem}
+    .step .num{width:36px;height:36px;border-radius:10px;background:#eef2ff;color:#3730a3;display:grid;place-items:center;font-weight:700;margin-bottom:.6rem}
+    @media (max-width: 900px){ .steps{grid-template-columns:1fr} }
+
+    .stats{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-top:1.5rem
+    }
+    .stat-card{background:#fff;border-radius:16px;box-shadow:var(--shadow-sm);padding:1rem;text-align:center}
+    .stat-card h3{font-size:1.6rem}
+    @media (max-width: 900px){ .stats{grid-template-columns:repeat(2,1fr)} }
+
+    .cta-band{
+      margin-top:2rem;background:linear-gradient(90deg,var(--brand),var(--accent));border-radius:16px;color:#fff;padding:1.25rem 1rem;
+      display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+    .footer{margin-top:3rem;background:#0b1220;color:#cbd5e1;padding:2rem 0}
+    .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:1.25rem}
+    .foot h5{color:#e2e8f0;margin-bottom:.6rem}
+    .foot a{color:#cbd5e1;display:block;margin:.3rem 0}
+    .news form{display:flex;gap:.5rem;margin-top:.6rem}
+    .input{
+      flex:1;padding:.65rem .8rem;border-radius:10px;border:1px solid #334155;background:#111827;color:#e5e7eb;
+      outline:none
+    }
+    .input:focus{box-shadow:0 0 0 3px rgba(255,255,255,.08)}
+    .btn.light{background:#e2e8f0;color:#111827}
+    .btn.light:hover{background:#fff}
+    .copy{margin-top:1rem;border-top:1px solid #1f2937;padding-top:1rem;color:#94a3b8;font-size:.95rem;text-align:center}
+  </style>
+</head>
+<body>
+  <!-- ========================= HEADER ========================= -->
+  <header class="header" id="header">
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo">RC</div>
+        <span data-i18n="brand">Rural Clinic</span>
+      </div>
+      <button class="menu" id="menuBtn">☰</button>
+      <nav class="links" id="links">
+        <a href="#home" data-i18n="nav_home">Home</a>
+        <a href="#services" data-i18n="nav_services">Services</a>
+        <a href="#doctors" data-i18n="nav_doctors">Doctors</a>
+        <a href="#how" data-i18n="nav_how">How it works</a>
+        <a href="#contact" data-i18n="nav_contact">Contact</a>
+        <a href="login.html" class="cta" data-i18n="nav_login">Login / Register</a>
+        <div class="lang" role="group" aria-label="Language switch">
+          <button class="active" id="langEN">EN</button>
+          <button id="langBN">বাংলা</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ========================= HERO ========================= -->
+  <section class="hero" id="home">
+    <div class="container hero-grid">
+      <div>
+        <span class="badge">✓ <span data-i18n="hero_badge">Primary care • Diagnostics • Telemedicine</span></span>
+        <h1 data-i18n="hero_title">Better Healthcare for Rural Communities</h1>
+        <p data-i18n="hero_sub">A simple, fast Patient Information System for clinics, doctors, and patients to register, book appointments, and manage care — in English & বাংলা.</p>
+        <div class="hero-actions">
+          <a href="#doctors" class="btn primary" data-i18n="cta_find">Find a Doctor</a>
+          <a href="#services" class="btn ghost" data-i18n="cta_services">Explore Services</a>
+        </div>
+      </div>
+      <div class="hero-card" aria-hidden="true">
+        <div class="stat"><span data-i18n="hero_s1">Patients registered</span><strong>12,480+</strong></div>
+        <div class="stat"><span data-i18n="hero_s2">Appointments this month</span><strong>1,245</strong></div>
+        <div class="stat"><span data-i18n="hero_s3">Active clinics</span><strong>32</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= SERVICES ========================= -->
+  <section class="section" id="services">
+    <div class="container">
+      <h2 class="title" data-i18n="services_title">Our Services</h2>
+      <p class="sub" data-i18n="services_sub">Designed for rural workflows — simple, mobile-first, and reliable.</p>
+
+      <div class="grid">
+        <div class="service" style="grid-column:span 3">
+          <div class="icon">👨‍👩‍⚕️</div>
+          <h3 data-i18n="srv_registration">Patient Registration</h3>
+          <p data-i18n="srv_registration_p">Quickly register patients with ID, phone, and demographics. Search by name or number.</p>
+        </div>
+        <div class="service" style="grid-column:span 3">
+          <div class="icon">📅</div>
+          <h3 data-i18n="srv_appointments">Appointment Booking</h3>
+          <p data-i18n="srv_appointments_p">Book, reschedule, and track appointments with SMS-friendly time slots.</p>
+        </div>
+        <div class="service" style="grid-column:span 3">
+          <div class="icon">🩺</div>
+          <h3 data-i18n="srv_consult">Doctor Consultation</h3>
+          <p data-i18n="srv_consult_p">In-clinic & video consultations with notes and prescriptions.</p>
+        </div>
+        <div class="service" style="grid-column:span 3">
+          <div class="icon">💊</div>
+          <h3 data-i18n="srv_pharmacy">Prescriptions</h3>
+          <p data-i18n="srv_pharmacy_p">Clean printable prescriptions with dosage, frequency, and duration.</p>
+        </div>
+        <div class="service" style="grid-column:span 4">
+          <div class="icon">📈</div>
+          <h3 data-i18n="srv_reports">Reports</h3>
+          <p data-i18n="srv_reports_p">Daily visit counts, diagnosis trends, and clinic performance dashboards.</p>
+        </div>
+        <div class="service" style="grid-column:span 4">
+          <div class="icon">🏠</div>
+          <h3 data-i18n="srv_home">Home & Remote Care</h3>
+          <p data-i18n="srv_home_p">Home sample collection and telemedicine options for remote villages.</p>
+        </div>
+        <div class="service" style="grid-column:span 4">
+          <div class="icon">🔐</div>
+          <h3 data-i18n="srv_security">Secure Records</h3>
+          <p data-i18n="srv_security_p">Role-based access for admin, doctors, staff, and patients.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= DOCTORS PREVIEW ========================= -->
+  <section class="section" id="doctors">
+    <div class="container">
+      <h2 class="title" data-i18n="docs_title">Find a Doctor</h2>
+      <p class="sub" data-i18n="docs_sub">View profiles, availability, and book instantly.</p>
+
+      <div class="slider-wrap">
+        <button class="nav-btn prev" aria-label="Previous" id="prevBtn">‹</button>
+        <div class="slider" id="slider">
+          <!-- Slide -->
+          <article class="slide">
+            <div class="doc-head"></div>
+            <div class="doc-card">
+              <span class="badge">General</span>
+              <h4>Dr. Ayesha Rahman</h4>
+              <p class="doc-meta">MBBS (DMC) • 10 yrs</p>
+              <p class="doc-meta">Sun–Thu • 9:00–17:00</p>
+              <div class="doc-actions">
+                <a href="doctor-profile.html?id=ayesha" class="btn small outline" data-i18n="view_profile">View Profile</a>
+                <a href="book-appointment.html?doctor=Dr-Ayesha-Rahman" class="btn small success" data-i18n="book_now">Book</a>
+              </div>
+            </div>
+          </article>
+          <article class="slide">
+            <div class="doc-head"></div>
+            <div class="doc-card">
+              <span class="badge">Pediatrics</span>
+              <h4>Dr. Farhan Khan</h4>
+              <p class="doc-meta">MBBS, DCH • 7 yrs</p>
+              <p class="doc-meta">Tue–Sat • 10:00–18:00</p>
+              <div class="doc-actions">
+                <a href="doctor-profile.html?id=farhan" class="btn small outline" data-i18n="view_profile">View Profile</a>
+                <a href="book-appointment.html?doctor=Dr-Farhan-Khan" class="btn small success" data-i18n="book_now">Book</a>
+              </div>
+            </div>
+          </article>
+          <article class="slide">
+            <div class="doc-head"></div>
+            <div class="doc-card">
+              <span class="badge">Cardiology</span>
+              <h4>Dr. Meherun Nahar</h4>
+              <p class="doc-meta">MBBS, MD • 12 yrs</p>
+              <p class="doc-meta">Mon–Wed • 11:00–17:00</p>
+              <div class="doc-actions">
+                <a href="doctor-profile.html?id=meherun" class="btn small outline" data-i18n="view_profile">View Profile</a>
+                <a href="book-appointment.html?doctor=Dr-Meherun-Nahar" class="btn small success" data-i18n="book_now">Book</a>
+              </div>
+            </div>
+          </article>
+          <article class="slide">
+            <div class="doc-head"></div>
+            <div class="doc-card">
+              <span class="badge">Dermatology</span>
+              <h4>Dr. Shuvo Sarker</h4>
+              <p class="doc-meta">MBBS, DD • 6 yrs</p>
+              <p class="doc-meta">Fri–Mon • 15:00–20:00</p>
+              <div class="doc-actions">
+                <a href="doctor-profile.html?id=shuvo" class="btn small outline" data-i18n="view_profile">View Profile</a>
+                <a href="book-appointment.html?doctor=Dr-Shuvo-Sarker" class="btn small success" data-i18n="book_now">Book</a>
+              </div>
+            </div>
+          </article>
+        </div>
+        <button class="nav-btn next" aria-label="Next" id="nextBtn">›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= HOW IT WORKS + STATS ========================= -->
+  <section class="section" id="how">
+    <div class="container">
+      <h2 class="title" data-i18n="how_title">How it works</h2>
+      <p class="sub" data-i18n="how_sub">Three simple steps to better care.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <h3 data-i18n="how_1">Register</h3>
+          <p data-i18n="how_1_p">Create a patient account with phone number and basic info.</p>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <h3 data-i18n="how_2">Book</h3>
+          <p data-i18n="how_2_p">Choose doctor, date, and time. Get SMS or WhatsApp reminders.</p>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <h3 data-i18n="how_3">Get Care</h3>
+          <p data-i18n="how_3_p">Visit clinic or join video call. Access records anytime.</p>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat-card"><h3>32</h3><p data-i18n="stat_clinics">Clinics using our system</p></div>
+        <div class="stat-card"><h3>120k+</h3><p data-i18n="stat_records">Records managed</p></div>
+        <div class="stat-card"><h3>8 mins</h3><p data-i18n="stat_booking">Avg. booking time</p></div>
+        <div class="stat-card"><h3>24/7</h3><p data-i18n="stat_support">Support availability</p></div>
+      </div>
+
+      <div class="cta-band">
+        <div>
+          <h3 data-i18n="cta_band_title">Ready to get started?</h3>
+          <p data-i18n="cta_band_sub">Sign up now and bring digital healthcare to your clinic.</p>
+        </div>
+        <a href="register.html" class="btn light" data-i18n="cta_band_btn">Create an account</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= FOOTER ========================= -->
+  <footer class="footer" id="contact">
+    <div class="container foot-grid">
+      <div class="foot">
+        <h5 data-i18n="foot_about">About Rural Clinic</h5>
+        <p style="color:#94a3b8;margin:.4rem 0 1rem" data-i18n="foot_about_p">
+          A patient information platform for rural Bangladesh — connecting clinics, doctors,
+          and patients with simple, reliable tools.
+        </p>
+        <p>📍 Dhaka, Bangladesh • ✉️ support@ruralclinic.bd</p>
+      </div>
+      <div class="foot">
+        <h5 data-i18n="foot_links">Quick Links</h5>
+        <a href="#services" data-i18n="foot_srv">Services</a>
+        <a href="#doctors" data-i18n="foot_docs">Find a Doctor</a>
+        <a href="login.html" data-i18n="foot_login">Login</a>
+        <a href="register.html" data-i18n="foot_register">Register</a>
+      </div>
+      <div class="foot news">
+        <h5 data-i18n="foot_news">Newsletter</h5>
+        <p style="color:#94a3b8" data-i18n="foot_news_p">Get updates about new clinics & features.</p>
+        <form id="newsForm" novalidate>
+          <input class="input" id="newsEmail" type="email" placeholder="you@example.com" required />
+          <button class="btn light" type="submit" data-i18n="foot_subscribe">Subscribe</button>
+        </form>
+        <small id="newsMsg" style="display:block;margin-top:.5rem"></small>
+      </div>
+    </div>
+    <div class="container copy">© 2025 Rural Clinic • Patient Information System</div>
+  </footer>
+
+  <script>
+    // ============ Mobile Menu ============
+    const menuBtn = document.getElementById('menuBtn');
+    const links = document.getElementById('links');
+    menuBtn?.addEventListener('click', ()=> links.classList.toggle('show'));
+
+    // ============ Sticky Header Shadow ============
+    const header = document.getElementById('header');
+    const setShadow = () => {
+      if(window.scrollY > 6){ header.style.boxShadow = '0 2px 12px rgba(0,0,0,.08)'; }
+      else { header.style.boxShadow = '0 1px 0 rgba(0,0,0,.06)'; }
+    };
+    document.addEventListener('scroll', setShadow); setShadow();
+
+    // ============ Doctors Slider Buttons ============
+    const slider = document.getElementById('slider');
+    document.getElementById('prevBtn')?.addEventListener('click', ()=> slider.scrollBy({left:-slider.clientWidth*0.9,behavior:'smooth'}));
+    document.getElementById('nextBtn')?.addEventListener('click', ()=> slider.scrollBy({left: slider.clientWidth*0.9,behavior:'smooth'}));
+
+    // ============ Newsletter (simple validation) ============
+    const newsForm = document.getElementById('newsForm');
+    const newsEmail = document.getElementById('newsEmail');
+    const newsMsg = document.getElementById('newsMsg');
+    newsForm?.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const email = (newsEmail.value||'').trim();
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+        newsMsg.style.color = '#ef4444';
+        newsMsg.textContent = 'Please enter a valid email.';
+        return;
+      }
+      newsMsg.style.color = '#10b981';
+      newsMsg.textContent = 'Subscribed! (demo only)';
+      newsForm.reset();
+    });
+
+    // ============ Bilingual Content (EN / BN) ============
+    const dict = {
+      en: {
+        brand: "Rural Clinic",
+        nav_home:"Home", nav_services:"Services", nav_doctors:"Doctors", nav_how:"How it works", nav_contact:"Contact", nav_login:"Login / Register",
+        hero_badge:"Primary care • Diagnostics • Telemedicine",
+        hero_title:"Better Healthcare for Rural Communities",
+        hero_sub:"A simple, fast Patient Information System for clinics, doctors, and patients to register, book appointments, and manage care — in English & বাংলা.",
+        cta_find:"Find a Doctor", cta_services:"Explore Services",
+        hero_s1:"Patients registered", hero_s2:"Appointments this month", hero_s3:"Active clinics",
+        services_title:"Our Services", services_sub:"Designed for rural workflows — simple, mobile-first, and reliable.",
+        srv_registration:"Patient Registration", srv_registration_p:"Quickly register patients with ID, phone, and demographics. Search by name or number.",
+        srv_appointments:"Appointment Booking", srv_appointments_p:"Book, reschedule, and track appointments with SMS-friendly time slots.",
+        srv_consult:"Doctor Consultation", srv_consult_p:"In-clinic & video consultations with notes and prescriptions.",
+        srv_pharmacy:"Prescriptions", srv_pharmacy_p:"Clean printable prescriptions with dosage, frequency, and duration.",
+        srv_reports:"Reports", srv_reports_p:"Daily visit counts, diagnosis trends, and clinic performance dashboards.",
+        srv_home:"Home & Remote Care", srv_home_p:"Home sample collection and telemedicine options for remote villages.",
+        srv_security:"Secure Records", srv_security_p:"Role-based access for admin, doctors, staff, and patients.",
+        docs_title:"Find a Doctor", docs_sub:"View profiles, availability, and book instantly.", view_profile:"View Profile", book_now:"Book",
+        how_title:"How it works", how_sub:"Three simple steps to better care.",
+        how_1:"Register", how_1_p:"Create a patient account with phone number and basic info.",
+        how_2:"Book", how_2_p:"Choose doctor, date, and time. Get SMS or WhatsApp reminders.",
+        how_3:"Get Care", how_3_p:"Visit clinic or join video call. Access records anytime.",
+        stat_clinics:"Clinics using our system", stat_records:"Records managed", stat_booking:"Avg. booking time", stat_support:"Support availability",
+        cta_band_title:"Ready to get started?", cta_band_sub:"Sign up now and bring digital healthcare to your clinic.", cta_band_btn:"Create an account",
+        foot_about:"About Rural Clinic", foot_about_p:"A patient information platform for rural Bangladesh — connecting clinics, doctors, and patients with simple, reliable tools.",
+        foot_links:"Quick Links", foot_srv:"Services", foot_docs:"Find a Doctor", foot_login:"Login", foot_register:"Register",
+        foot_news:"Newsletter", foot_news_p:"Get updates about new clinics & features.", foot_subscribe:"Subscribe"
+      },
+      bn: {
+        brand:"রুরাল ক্লিনিক",
+        nav_home:"হোম", nav_services:"সেবা", nav_doctors:"ডাক্তার", nav_how:"কিভাবে কাজ করে", nav_contact:"যোগাযোগ", nav_login:"লগইন / রেজিস্টার",
+        hero_badge:"প্রাইমারি কেয়ার • ডায়াগনস্টিকস • টেলিমেডিসিন",
+        hero_title:"গ্রামীণ জনগণের জন্য উন্নত স্বাস্থ্যসেবা",
+        hero_sub:"ক্লিনিক, ডাক্তার ও রোগীদের জন্য নিবন্ধন, অ্যাপয়েন্টমেন্ট বুকিং ও রেকর্ড ব্যবস্থাপনার সহজ ও দ্রুত ব্যবস্থা — ইংরেজি ও বাংলায়।",
+        cta_find:"ডাক্তার খুঁজুন", cta_services:"সেবা দেখুন",
+        hero_s1:"নিবন্ধিত রোগী", hero_s2:"এই মাসের অ্যাপয়েন্টমেন্ট", hero_s3:"সক্রিয় ক্লিনিক",
+        services_title:"আমাদের সেবা", services_sub:"গ্রামীণ কাজের ধারা মাথায় রেখে — সহজ, মোবাইল ফার্স্ট ও নির্ভরযোগ্য।",
+        srv_registration:"রোগী নিবন্ধন", srv_registration_p:"আইডি, ফোন ও তথ্য দিয়ে দ্রুত নিবন্ধন। নাম বা নম্বর দিয়ে সার্চ।",
+        srv_appointments:"অ্যাপয়েন্টমেন্ট বুকিং", srv_appointments_p:"বুকিং, রিশিডিউল ও ট্র্যাকিং — এসএমএস সময়সূচি সহ।",
+        srv_consult:"ডাক্তারের পরামর্শ", srv_consult_p:"ক্লিনিক বা ভিডিও কনসাল্টেশন, নোট ও প্রেসক্রিপশন সহ।",
+        srv_pharmacy:"প্রেসক্রিপশন", srv_pharmacy_p:"ডোজ, ফ্রিকোয়েন্সি, সময়সীমা সহ পরিষ্কার প্রিন্টেবল প্রেসক্রিপশন।",
+        srv_reports:"রিপোর্টস", srv_reports_p:"দৈনিক রোগী সংখ্যা, রোগ নির্ণয় ট্রেন্ড ও ক্লিনিক পারফরম্যান্স।",
+        srv_home:"হোম ও রিমোট কেয়ার", srv_home_p:"বাড়িতে স্যাম্পল সংগ্রহ ও টেলিমেডিসিন সুবিধা।",
+        srv_security:"সুরক্ষিত রেকর্ড", srv_security_p:"অ্যাডমিন, ডাক্তার, স্টাফ ও রোগীর জন্য রোল-বেসড অ্যাক্সেস।",
+        docs_title:"ডাক্তার খুঁজুন", docs_sub:"প্রোফাইল, অ্যাভেইলেবিলিটি দেখুন ও সঙ্গে সঙ্গে বুক করুন।", view_profile:"প্রোফাইল দেখুন", book_now:"বুক করুন",
+        how_title:"কিভাবে কাজ করে", how_sub:"তিন ধাপে আপনার সেবা।",
+        how_1:"রেজিস্টার", how_1_p:"ফোন নম্বর ও বেসিক তথ্য দিয়ে রোগী অ্যাকাউন্ট করুন।",
+        how_2:"বুকিং", how_2_p:"ডাক্তার, তারিখ ও সময় নির্বাচন করুন। এসএমএস/হোয়াটসঅ্যাপ রিমাইন্ডার পান।",
+        how_3:"চিকিৎসা", how_3_p:"ক্লিনিকে যান বা ভিডিও কলে যোগ দিন। যেকোনো সময় রেকর্ড দেখুন।",
+        stat_clinics:"আমাদের সিস্টেমে ক্লিনিক", stat_records:"পরিচালিত রেকর্ড", stat_booking:"গড় বুকিং সময়", stat_support:"সাপোর্ট সুবিধা",
+        cta_band_title:"শুরু করতে প্রস্তুত?", cta_band_sub:"আপনার ক্লিনিকে ডিজিটাল স্বাস্থ্যসেবা আনতে এখনই সাইন আপ করুন।", cta_band_btn:"অ্যাকাউন্ট তৈরি করুন",
+        foot_about:"রুরাল ক্লিনিক সম্পর্কে", foot_about_p:"বাংলাদেশের গ্রামীণ অঞ্চলের জন্য রোগী তথ্যভিত্তিক প্ল্যাটফর্ম — ক্লিনিক, ডাক্তার ও রোগীদের সহজে যুক্ত করে।",
+        foot_links:"দ্রুত লিংক", foot_srv:"সেবা", foot_docs:"ডাক্তার", foot_login:"লগইন", foot_register:"রেজিস্টার",
+        foot_news:"নিউজলেটার", foot_news_p:"নতুন ক্লিনিক ও ফিচারের আপডেট পেতে সাবস্ক্রাইব করুন।", foot_subscribe:"সাবস্ক্রাইব"
+      }
+    };
+
+    const applyLang = (lang='en')=>{
+      document.querySelectorAll('[data-i18n]').forEach(el=>{
+        const key = el.getAttribute('data-i18n');
+        if(dict[lang][key]) el.textContent = dict[lang][key];
+      });
+      document.getElementById('langEN').classList.toggle('active', lang==='en');
+      document.getElementById('langBN').classList.toggle('active', lang==='bn');
+      document.documentElement.lang = lang === 'bn' ? 'bn' : 'en';
+    };
+    document.getElementById('langEN').addEventListener('click', ()=>applyLang('en'));
+    document.getElementById('langBN').addEventListener('click', ()=>applyLang('bn'));
+    applyLang('en'); // default
+  </script>
+</body>
+</html>
