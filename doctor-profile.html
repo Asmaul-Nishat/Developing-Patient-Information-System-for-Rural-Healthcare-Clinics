@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Profile | Rural Healthcare Clinics</title>
+  <style>
+    :root{
+      --brand:#006a4e;
+      --brand-dark:#004d39;
+      --bg:#f7f8fb;
+      --surface:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --radius:14px;
+      --shadow:0 8px 28px rgba(16,24,40,.08);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans Bengali",Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+    header{background:var(--brand);color:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
+    header a{color:#fff;text-decoration:none;margin-left:16px;opacity:.95}
+    header a:hover{opacity:1;text-decoration:underline}
+    .container{max-width:900px;margin:24px auto;display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:0 16px}
+    .card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+    .profile img{width:100%;height:280px;object-fit:cover;border-radius:12px;margin-bottom:12px}
+    .profile h2{color:var(--brand);margin-bottom:4px}
+    .profile .meta{color:var(--muted);margin-bottom:12px}
+    .list{margin:8px 0 0 0}
+    .list li{margin:6px 0}
+    .badge{display:inline-block;background:#e6f4ef;color:var(--brand);padding:4px 8px;border-radius:999px;font-size:.85rem;margin-right:6px}
+    .booking h3{color:var(--brand);margin-bottom:8px}
+    .btn{background:var(--brand);color:#fff;border:0;padding:14px;border-radius:12px;font-weight:700;width:100%;margin-top:16px;cursor:pointer;font-size:1rem;transition:0.3s}
+    .btn:hover{background:var(--brand-dark)}
+    @media (max-width: 900px){ .container{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+  <header>
+    <div><strong>Rural Healthcare Clinics</strong></div>
+    <nav>
+      <a href="/index.html">Home</a>
+      <a href="/home /doctor.html">Doctors</a>
+      <a href="/home /book-appointment.html">Appointments</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- Doctor Profile -->
+    <section class="card profile">
+      <img id="docPhoto" src="" alt="Doctor photo">
+      <h2 id="docName"></h2>
+      <div class="meta"><span id="docSpecialty"></span> • <span id="docExp"></span></div>
+      <div class="badges"></div>
+      <ul class="list">
+        <li><strong>Clinic:</strong> <span id="docClinic"></span></li>
+        <li><strong>Visiting Hours:</strong> <span id="docHours"></span></li>
+        <li><strong>Consultation Fee:</strong> <span id="docFee"></span></li>
+      </ul>
+      <p id="docDesc" style="margin-top:10px"></p>
+    </section>
+
+    <!-- Appointment Button -->
+    <section class="card booking">
+      <h3>Book an Appointment</h3>
+      <button class="btn" onclick="bookAppointment()">Book Appointment</button>
+    </section>
+  </main>
+
+  <script>
+    // Doctor data
+    const DOCTORS = {
+      "dr-alice-smith": {
+        name: "Dr. Alice Smith",
+        photo: "/image/image copy 2.png",
+        specialty: "Physician",
+        experience: "5 years experience",
+        clinic: "Rural Clinic, Dhaka",
+        hours: "Mon–Fri, 9am–5pm",
+        fee: "500 BDT",
+        badges: ["MBBS","FCPS","Bangla","English"],
+        description: "Dr. Alice Smith provides accessible healthcare for rural communities."
+      },
+      "dr-brian-khan": {
+        name: "Dr. Brian Khan",
+        photo: "/image/image copy 3.png",
+        specialty: "Dentist",
+        experience: "8 years experience",
+        clinic: "Community Health, Chattogram",
+        hours: "Mon–Fri, 10am–4pm",
+        fee: "600 BDT",
+        badges: ["BDS","Dental Surgery","Bangla","English"],
+        description: "Dr. Brian Khan specializes in dental care and oral hygiene awareness."
+      },
+      "dr-clara-das": {
+        name: "Dr. Clara Das",
+        photo: "/image/image copy 4.png",
+        specialty: "Cardiologist",
+        experience: "10 years experience",
+        clinic: "Rural Care, Sylhet",
+        hours: "Sat–Thu, 10am–5pm",
+        fee: "700 BDT",
+        badges: ["MBBS","FCPS (Cardiology)","Bangla","English"],
+        description: "Dr. Clara Das focuses on high-quality cardiac care for rural communities."
+      },
+      "dr-david-roy": {
+        name: "Dr. David Roy",
+        photo: "/image/image copy.png",
+        specialty: "Pediatrician",
+        experience: "6 years experience",
+        clinic: "Upazila Health, Rajshahi",
+        hours: "Mon–Fri, 9am–4pm",
+        fee: "500 BDT",
+        badges: ["MBBS","FCPS (Pediatrics)","Bangla","English"],
+        description: "Dr. David Roy provides pediatric care with focus on preventive health."
+      }
+    };
+
+    const params = new URLSearchParams(location.search);
+    const docId = params.get("doctor");
+    const doctor = DOCTORS[docId];
+
+    if(doctor){
+      document.getElementById("docName").textContent = doctor.name;
+      document.getElementById("docPhoto").src = doctor.photo;
+      document.getElementById("docSpecialty").textContent = doctor.specialty;
+      document.getElementById("docExp").textContent = doctor.experience;
+      document.getElementById("docClinic").textContent = doctor.clinic;
+      document.getElementById("docHours").textContent = doctor.hours;
+      document.getElementById("docFee").textContent = doctor.fee;
+      document.getElementById("docDesc").textContent = doctor.description;
+
+      const badgeContainer = document.querySelector(".profile .badges");
+      badgeContainer.innerHTML = "";
+      doctor.badges.forEach(b=>{
+        const span = document.createElement("span");
+        span.className = "badge";
+        span.textContent = b;
+        badgeContainer.appendChild(span);
+      });
+    } else {
+      document.querySelector(".profile").innerHTML = "<p>Doctor not found.</p>";
+      document.querySelector(".booking").style.display="none";
+    }
+
+    function bookAppointment(){
+      if(doctor){
+        alert(`Booking appointment with ${doctor.name}. Redirecting to appointment page...`);
+        window.location.href = "/home /book-appointment.html?doctor="+docId;
+      }
+    }
+  </script>
+</body>
+</html>
