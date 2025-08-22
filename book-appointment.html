@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Appointment | Rural Healthcare Clinics</title>
+  <style>
+    :root{
+      --brand:#006a4e;
+      --brand-dark:#004d39;
+      --bg:#f7f8fb;
+      --surface:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --radius:14px;
+      --shadow:0 8px 28px rgba(16,24,40,.08);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans Bengali",Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+    header{background:var(--brand);color:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
+    header a{color:#fff;text-decoration:none;margin-left:16px;opacity:.95}
+    header a:hover{opacity:1;text-decoration:underline}
+    .container{max-width:600px;margin:40px auto;padding:0 16px}
+    .card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+    .card h2{color:var(--brand);margin-bottom:16px;text-align:center}
+    label{display:block;font-weight:600;margin-top:12px}
+    input,select,textarea{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:10px;margin-top:6px;font-size:14px}
+    button{background:var(--brand);color:#fff;border:0;padding:12px;border-radius:12px;font-weight:700;width:100%;margin-top:16px;cursor:pointer}
+    button:hover{background:var(--brand-dark)}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .help{font-size:.9rem;color:var(--muted);margin-top:6px}
+    .error{color:#ef4444;font-weight:600;margin-top:8px}
+    .note{background:#fff6e6;border:1px solid #ffd28a;color:#7a4a00;padding:8px 10px;border-radius:10px;margin-top:10px}
+    @media (max-width: 600px){ .row{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+  <header>
+    <div><strong>Rural Healthcare Clinics</strong></div>
+    <nav>
+      <a href="/index.html">Home</a>
+      <a href="/home /doctor.html">Doctors</a>
+      <a href="/home /book-appointment.html">Appointments</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <h2>Book an Appointment</h2>
+      <form id="appointmentForm" novalidate>
+        <div class="row">
+          <div>
+            <label for="patientName">Full Name</label>
+            <input id="patientName" name="patientName" required placeholder="Your name">
+          </div>
+          <div>
+            <label for="patientContact">Phone Number</label>
+            <input id="patientContact" name="patientContact" type="tel" placeholder="01XXXXXXXXX">
+          </div>
+        </div>
+        <label for="patientEmail">Email</label>
+        <input id="patientEmail" name="patientEmail" type="email" placeholder="you@example.com">
+        
+        <div class="row">
+          <div>
+            <label for="appointmentDate">Date</label>
+            <input id="appointmentDate" name="appointmentDate" type="date" required>
+            <div class="help">Bangladesh time (Asia/Dhaka)</div>
+          </div>
+          <div>
+            <label for="appointmentTime">Time Slot</label>
+            <select id="appointmentTime" name="appointmentTime" required></select>
+            <div class="help" id="slotHelp">Only future slots are shown for today.</div>
+          </div>
+        </div>
+        <label for="reason">Reason for Visit</label>
+        <textarea id="reason" name="reason" rows="3" placeholder="Describe your symptoms" required></textarea>
+        <div class="note">All fields are required. Either phone or email must be provided. Past dates or times are blocked automatically.</div>
+        <div class="error" id="formError" aria-live="polite"></div>
+        <button type="submit">Confirm Appointment</button>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    function bdTodayISO(){
+      return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Dhaka', year:'numeric', month:'2-digit', day:'2-digit'}).format(new Date());
+    }
+    function bdNowMinutes(){
+      const parts = new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dhaka', hour:'2-digit', minute:'2-digit', hourCycle:'h23'}).formatToParts(new Date());
+      return parseInt(parts.find(p=>p.type==='hour').value)*60 + parseInt(parts.find(p=>p.type==='minute').value);
+    }
+    function parseHHMMToMinutes(hhmm24){const [h,m]=hhmm24.split(':').map(Number);return h*60+m;}
+
+    const ALL_SLOTS = [
+      { label:'10:00 AM - 11:00 AM', start:'10:00' },
+      { label:'11:00 AM - 12:00 PM', start:'11:00' },
+      { label:'2:00 PM - 3:00 PM',  start:'14:00' },
+      { label:'3:00 PM - 4:00 PM',  start:'15:00' }
+    ];
+
+    const dateInput = document.getElementById('appointmentDate');
+    const timeSelect = document.getElementById('appointmentTime');
+    const reasonInput = document.getElementById('reason');
+    const nameInput = document.getElementById('patientName');
+    const contactInput = document.getElementById('patientContact');
+    const emailInput = document.getElementById('patientEmail');
+    const formError = document.getElementById('formError');
+
+    function initDateMin(){
+      const today = bdTodayISO();
+      dateInput.min = today;
+      if(!dateInput.value || dateInput.value < today){dateInput.value=today;}
+    }
+
+    function populateSlots(){
+      const selected = dateInput.value;
+      const today = bdTodayISO();
+      timeSelect.innerHTML="";
+      ALL_SLOTS.forEach(slot=>{
+        let disabled = false;
+        if(selected===today){
+          if(parseHHMMToMinutes(slot.start)<=bdNowMinutes()){disabled=true;}
+        }
+        const opt = document.createElement('option');
+        opt.value=slot.start;
+        opt.textContent=slot.label;
+        if(disabled) opt.disabled=true;
+        timeSelect.appendChild(opt);
+      });
+    }
+
+    dateInput.addEventListener('change',populateSlots);
+    window.addEventListener('load',()=>{
+      initDateMin();
+      populateSlots();
+    });
+
+    document.getElementById('appointmentForm').addEventListener('submit', e=>{
+      e.preventDefault();
+
+      const name = nameInput.value.trim();
+      const contact = contactInput.value.trim();
+      const email = emailInput.value.trim();
+      const date = dateInput.value;
+      const time = timeSelect.value;
+      const reason = reasonInput.value.trim();
+
+      // Check all mandatory fields
+      if(!name || !date || !time || !reason){
+        formError.textContent="Please fill in all mandatory fields.";
+        return;
+      }
+
+      // Either phone or email required
+      if(!contact && !email){
+        formError.textContent="Please provide either a phone number or an email.";
+        return;
+      }
+
+      // If phone filled, validate
+      if(contact){
+        const phoneRegex = /^01\d{9}$/;
+        if(!phoneRegex.test(contact)){
+          formError.textContent="Phone number must start with 01 and have 11 digits.";
+          return;
+        }
+      }
+
+      formError.textContent="";
+      alert(`✅ Appointment confirmed!\nName: ${name}\nDate: ${date}\nTime: ${time}${contact ? `\nPhone: ${contact}` : ''}${email ? `\nEmail: ${email}` : ''}`);
+      
+      e.target.reset();
+      initDateMin();
+      populateSlots();
+    });
+  </script>
+</body>
+</html>
