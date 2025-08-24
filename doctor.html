@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Doctors | Rural Healthcare Clinics</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f8f9fa;
+      color: #333;
+    }
+
+    header {
+      background: #006a4e;
+      color: #fff;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 { margin: 0; font-size: 1.6rem; }
+    nav a {
+      color: #fff;
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    nav a:hover { text-decoration: underline; }
+
+    .container { padding: 2rem; max-width: 1200px; margin: auto; }
+
+    .search-bar { text-align: center; margin-bottom: 1rem; }
+    .search-bar input {
+      width: 80%;
+      max-width: 500px;
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .filters, .alphabet-filter {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 1.5rem;
+    }
+
+    .filters button, .alphabet-filter button {
+      padding: 6px 14px;
+      border: none;
+      border-radius: 20px;
+      background: #e9ecef;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 0.95rem;
+    }
+    .filters button.active, .filters button:hover,
+    .alphabet-filter button.active, .alphabet-filter button:hover {
+      background: #006a4e;
+      color: #fff;
+    }
+
+    .doctor-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .doctor-card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 1rem;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+    .doctor-card:hover { transform: translateY(-5px); }
+    .doctor-card img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1rem;
+    }
+    .doctor-card h3 { margin: 0.5rem 0; font-size: 1.2rem; }
+    .doctor-card p { margin: 0.2rem 0; font-size: 0.95rem; color: #666; }
+    .doctor-card .btn {
+      display: inline-block;
+      margin: 0.5rem 5px;
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .view-btn { background: #006a4e; color: #fff; }
+    .view-btn:hover { background: #004d39; }
+    .book-btn { background: #f8f9fa; border: 1px solid #006a4e; color: #006a4e; }
+    .book-btn:hover { background: #006a4e; color: #fff; }
+
+    @media(max-width: 600px) {
+      header { flex-direction: column; text-align: center; }
+      nav { margin-top: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Our Doctors</h1>
+    <nav>
+      <a href="/index.html">Home</a>
+      <a href="/home /doctor.html">Doctors</a>
+      <a href="/book-appointment.html">Appointments</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <div class="container">
+
+    <!-- Search -->
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search doctors by name or specialty...">
+    </div>
+
+    <!-- Alphabet Filter -->
+    <div class="alphabet-filter" id="alphabetFilter"></div>
+
+    <!-- Specialty Filters -->
+    <div class="filters">
+      <button class="active" data-specialty="all">All</button>
+      <button data-specialty="physician">Physician</button>
+      <button data-specialty="dentist">Dentist</button>
+      <button data-specialty="cardiologist">Cardiologist</button>
+      <button data-specialty="pediatrician">Pediatrician</button>
+    </div>
+
+    <!-- Doctor Grid -->
+    <div class="doctor-grid" id="doctorGrid"></div>
+  </div>
+
+  <script>
+    // Doctor data
+    const DOCTORS = [
+      {id:"dr-alice-smith", name:"Alice Smith", specialty:"physician", clinic:"Rural Clinic, Dhaka", photo:"/image/image copy 2.png"},
+      {id:"dr-brian-khan", name:"Brian Khan", specialty:"dentist", clinic:"Community Health, Chattogram", photo:"/image/image copy 3.png"},
+      {id:"dr-clara-das", name:"Clara Das", specialty:"cardiologist", clinic:"Rural Care, Sylhet", photo:"/image/image copy 4.png"},
+      {id:"dr-david-roy", name:"David Roy", specialty:"pediatrician", clinic:"Upazila Health, Rajshahi", photo:"/image/image copy 5.png"}
+    ];
+
+    const doctorGrid = document.getElementById('doctorGrid');
+
+    function renderDoctors(list){
+      doctorGrid.innerHTML = '';
+      list.forEach(d => {
+        const card = document.createElement('div');
+        card.className = 'doctor-card';
+        card.setAttribute('data-name', d.name);
+        card.setAttribute('data-specialty', d.specialty);
+        card.innerHTML = `
+          <img src="${d.photo}" alt="Doctor ${d.name}">
+          <h3>Dr. ${d.name}</h3>
+          <p>${d.specialty.charAt(0).toUpperCase() + d.specialty.slice(1)}</p>
+          <p>${d.clinic}</p>
+          <a href="doctor-profile.html?doctor=${d.id}" class="btn view-btn">View Profile</a>
+          <a href="book-appointment.html" class="btn book-btn">Book Appointment</a>
+        `;
+        doctorGrid.appendChild(card);
+      });
+    }
+
+    renderDoctors(DOCTORS);
+
+    // Alphabet Filter
+    const alphabetFilter = document.getElementById("alphabetFilter");
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(letter=>{
+      const btn = document.createElement("button");
+      btn.textContent = letter;
+      btn.addEventListener("click", ()=>filterDoctors());
+      alphabetFilter.appendChild(btn);
+    });
+
+    // Filter function
+    function filterDoctors(){
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const specialtyFilter = document.querySelector(".filters button.active").getAttribute('data-specialty');
+      const letterBtns = [...alphabetFilter.children].filter(b=>b.classList.contains('active'));
+      const letterFilter = letterBtns[0]?.textContent;
+
+      const filtered = DOCTORS.filter(d=>{
+        let matchQuery = d.name.toLowerCase().includes(query) || d.specialty.toLowerCase().includes(query);
+        let matchSpecialty = specialtyFilter==='all' || d.specialty===specialtyFilter;
+        let matchLetter = !letterFilter || d.name.startsWith(letterFilter);
+        return matchQuery && matchSpecialty && matchLetter;
+      });
+      renderDoctors(filtered);
+    }
+
+    // Search input
+    document.getElementById('searchInput').addEventListener('input', filterDoctors);
+
+    // Specialty buttons
+    document.querySelectorAll(".filters button").forEach(btn=>{
+      btn.addEventListener('click', function(){
+        document.querySelectorAll(".filters button").forEach(b=>b.classList.remove('active'));
+        this.classList.add('active');
+        filterDoctors();
+      });
+    });
+
+    // Alphabet buttons
+    document.querySelectorAll("#alphabetFilter button").forEach(btn=>{
+      btn.addEventListener('click', function(){
+        document.querySelectorAll("#alphabetFilter button").forEach(b=>b.classList.remove('active'));
+        this.classList.add('active');
+        filterDoctors();
+      });
+    });
+  </script>
+</body>
+</html>
