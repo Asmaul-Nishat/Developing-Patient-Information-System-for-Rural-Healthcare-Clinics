@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Patient Healthcare System</title>
+  <style>
+    /* --- CSS --- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f7f9;
+      color: #333;
+    }
+
+    header {
+      background-color: #0a6ebd;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+    }
+
+    header nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 15px;
+      padding: 5px 10px;
+    }
+
+    header nav a.active,
+    header nav a:hover {
+      background-color: #084d82;
+      border-radius: 4px;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .contact-section h2 {
+      margin-bottom: 15px;
+      color: #0a6ebd;
+    }
+
+    .contact-section p {
+      margin-bottom: 20px;
+    }
+
+    form label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    form input, form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    form textarea {
+      resize: vertical;
+      height: 120px;
+    }
+
+    form button {
+      background-color: #0a6ebd;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    form button:hover {
+      background-color: #084d82;
+    }
+
+    #formMessage {
+      margin-top: 10px;
+      font-weight: bold;
+      color: green;
+      display: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background-color: #0a6ebd;
+      color: white;
+      margin-top: 40px;
+    }
+
+    /* Optional: responsive for small devices */
+    @media(max-width:600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      header nav {
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Patient Healthcare System</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="contact.html" class="active">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="contact-section">
+      <h2>Contact Us</h2>
+      <p>If you have any questions or need assistance, please fill out the form below:</p>
+
+      <form id="contactForm">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" placeholder="Your full name">
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Your email address">
+
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" name="phone" placeholder="Your phone number">
+
+        <label for="message">Message</label>
+        <textarea id="message" name="message" placeholder="Your message"></textarea>
+
+        <button type="submit">Send Message</button>
+      </form>
+
+      <div id="formMessage"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Patient Healthcare System. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // --- JS ---
+    const form = document.getElementById('contactForm');
+    const formMessage = document.getElementById('formMessage');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const phone = form.phone.value.trim();
+      const message = form.message.value.trim();
+
+      if(name === '' || email === '' || message === '') {
+        formMessage.style.color = 'red';
+        formMessage.textContent = 'Please fill in all required fields.';
+        formMessage.style.display = 'block';
+        return;
+      }
+
+      // Display success message
+      formMessage.style.color = 'green';
+      formMessage.textContent = `Thank you, ${name}! Your message has been sent.`;
+      formMessage.style.display = 'block';
+
+      // Clear the form
+      form.reset();
+    });
+  </script>
+
+</body>
+</html>
