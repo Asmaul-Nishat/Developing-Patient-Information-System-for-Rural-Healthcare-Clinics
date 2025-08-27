@@ -5,96 +5,149 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About Us - Rural Healthcare System</title>
   <style>
-    body {
+    :root {
+      --primary: #009688;
+      --secondary: #004d40;
+      --light: #f9f9f9;
+      --dark: #333;
+    }
+
+    * {
       margin: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: #f4f6f9;
-      color: #333;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: var(--light);
+      color: var(--dark);
       line-height: 1.6;
     }
 
     /* Navbar */
     header {
-      background: #00695c;
+      background: var(--primary);
       color: #fff;
-      padding: 15px 40px;
+      padding: 15px 50px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
     header h1 {
-      margin: 0;
       font-size: 22px;
+      letter-spacing: 1px;
     }
     nav a {
       color: #fff;
       text-decoration: none;
-      margin-left: 20px;
+      margin-left: 25px;
       font-size: 16px;
+      transition: 0.3s;
     }
     nav a:hover {
-      text-decoration: underline;
+      color: #ffe082;
     }
 
-    /* Hero Section */
+    /* Hero */
     .hero {
-      background: url("https://images.unsplash.com/photo-1587502536263-1aa503b9c7e8?auto=format&fit=crop&w=1200&q=80")
+      background: linear-gradient(rgba(0, 77, 64, 0.7), rgba(0, 77, 64, 0.7)),
+        url("https://images.unsplash.com/photo-1587502536263-1aa503b9c7e8?auto=format&fit=crop&w=1400&q=80")
         center/cover no-repeat;
-      height: 250px;
+      height: 300px;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
+      text-align: center;
       color: white;
-      text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
+      padding: 20px;
     }
     .hero h2 {
-      font-size: 32px;
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+    .hero p {
+      font-size: 18px;
+      max-width: 700px;
     }
 
     /* About Section */
     .about {
-      padding: 40px;
-      max-width: 1000px;
+      padding: 60px 20px;
+      max-width: 1100px;
       margin: auto;
     }
     .about h2 {
       text-align: center;
+      font-size: 28px;
+      color: var(--primary);
       margin-bottom: 20px;
-      color: #00695c;
     }
     .about p {
-      text-align: justify;
-      margin-bottom: 20px;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 40px;
+      color: #555;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card h3 {
+      margin-bottom: 10px;
+      color: var(--secondary);
     }
 
     /* Team Section */
     .team {
       background: #e0f2f1;
-      padding: 40px;
+      padding: 60px 20px;
     }
     .team h2 {
       text-align: center;
-      color: #00695c;
-      margin-bottom: 30px;
+      font-size: 28px;
+      color: var(--primary);
+      margin-bottom: 40px;
     }
     .team-members {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 20px;
+      gap: 25px;
     }
     .member {
       background: white;
+      border-radius: 12px;
       padding: 20px;
-      border-radius: 8px;
-      width: 220px;
+      width: 230px;
       text-align: center;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: 0.3s;
+    }
+    .member:hover {
+      transform: scale(1.05);
     }
     .member img {
-      width: 100px;
-      height: 100px;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
+      object-fit: cover;
       margin-bottom: 15px;
     }
     .member h3 {
@@ -102,12 +155,12 @@
     }
     .member p {
       font-size: 14px;
-      color: #555;
+      color: #666;
     }
 
     /* Footer */
     footer {
-      background: #004d40;
+      background: var(--secondary);
       color: white;
       text-align: center;
       padding: 15px;
@@ -118,10 +171,6 @@
     @media (max-width: 768px) {
       nav {
         display: none;
-      }
-      .team-members {
-        flex-direction: column;
-        align-items: center;
       }
     }
   </style>
@@ -140,27 +189,33 @@
 
   <!-- Hero -->
   <section class="hero">
-    <h2>About Our Healthcare Project</h2>
+    <h2>About Our Project</h2>
+    <p>Building a smarter, accessible healthcare solution for rural communities</p>
   </section>
 
   <!-- About Content -->
   <section class="about">
-    <h2>Our Mission</h2>
+    <h2>Who We Are</h2>
     <p>
-      Our Rural Healthcare Information System is designed to provide accessible,
-      affordable, and reliable healthcare support for people in rural areas. We
-      aim to bridge the gap between urban and rural medical facilities by
-      implementing digital health solutions such as patient records, telemedicine,
-      and doctor-patient communication.
+      Our Rural Healthcare Information System is designed to make healthcare services
+      more accessible in underserved areas. We provide digital solutions to connect
+      patients, doctors, and healthcare workers efficiently.
     </p>
 
-    <h2>Objectives</h2>
-    <p>
-      1. Digitize patient healthcare information securely.<br>
-      2. Provide telemedicine services for remote areas.<br>
-      3. Support healthcare workers with decision-making tools.<br>
-      4. Improve access to quality healthcare in rural communities.
-    </p>
+    <div class="cards">
+      <div class="card">
+        <h3>Our Mission</h3>
+        <p>To improve healthcare accessibility in rural communities by providing digital medical support and telemedicine solutions.</p>
+      </div>
+      <div class="card">
+        <h3>Our Vision</h3>
+        <p>Creating a future where every individual, regardless of location, can receive timely and reliable healthcare.</p>
+      </div>
+      <div class="card">
+        <h3>Objectives</h3>
+        <p>Digitize patient data, enable doctor-patient communication, and support health workers with better tools for decision-making.</p>
+      </div>
+    </div>
   </section>
 
   <!-- Team Section -->
@@ -168,17 +223,17 @@
     <h2>Meet Our Team</h2>
     <div class="team-members">
       <div class="member">
-        <img src="https://via.placeholder.com/100" alt="Team Member">
+        <img src="https://via.placeholder.com/90" alt="Team Member">
         <h3>Dr. Rahman</h3>
         <p>Medical Advisor</p>
       </div>
       <div class="member">
-        <img src="https://via.placeholder.com/100" alt="Team Member">
+        <img src="https://via.placeholder.com/90" alt="Team Member">
         <h3>Asmaul Nishat</h3>
-        <p>Project Developer</p>
+        <p>Lead Developer</p>
       </div>
       <div class="member">
-        <img src="https://via.placeholder.com/100" alt="Team Member">
+        <img src="https://via.placeholder.com/90" alt="Team Member">
         <h3>Sarah Khan</h3>
         <p>UI/UX Designer</p>
       </div>
@@ -190,12 +245,21 @@
     &copy; 2025 Rural Healthcare Information System | All Rights Reserved
   </footer>
 
-  <!-- JS for small effect -->
+  <!-- JS for small animation -->
   <script>
-    // Example: Alert on page load
-    window.onload = () => {
-      console.log("About page loaded successfully!");
-    };
+    // Simple fade-in animation
+    document.addEventListener("DOMContentLoaded", () => {
+      const cards = document.querySelectorAll(".card, .member");
+      cards.forEach((el, i) => {
+        el.style.opacity = "0";
+        el.style.transform = "translateY(20px)";
+        setTimeout(() => {
+          el.style.transition = "all 0.6s ease";
+          el.style.opacity = "1";
+          el.style.transform = "translateY(0)";
+        }, i * 200);
+      });
+    });
   </script>
 </body>
 </html>
