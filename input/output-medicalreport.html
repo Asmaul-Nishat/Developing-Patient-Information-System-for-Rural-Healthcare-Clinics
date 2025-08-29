@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Medical Record Report</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<h2>Medical Records</h2>
+
+<table border="1" cellpadding="8">
+<tr><th>Patient ID</th><th>Diagnosis</th><th>Prescription</th><th>Treatment Notes</th></tr>
+<tr><td>P001</td><td>Fever</td><td>Paracetamol</td><td>Rest 3 days</td></tr>
+<tr><td>P002</td><td>Diabetes</td><td>Metformin</td><td>Check sugar daily</td></tr>
+<tr><td>P003</td><td>Hypertension</td><td>Amlodipine</td><td>Low salt diet</td></tr>
+<tr><td>P004</td><td>Headache</td><td>Ibuprofen</td><td>Hydrate</td></tr>
+<tr><td>P005</td><td>Fever</td><td>Paracetamol</td><td>Rest 2 days</td></tr>
+<tr><td>P006</td><td>Cold</td><td>Antihistamine</td><td>Warm fluids</td></tr>
+<tr><td>P007</td><td>Diabetes</td><td>Metformin</td><td>Diet control</td></tr>
+<tr><td>P008</td><td>Asthma</td><td>Inhaler</td><td>Avoid allergens</td></tr>
+<tr><td>P009</td><td>Hypertension</td><td>Amlodipine</td><td>Exercise daily</td></tr>
+<tr><td>P010</td><td>Fever</td><td>Paracetamol</td><td>Rest 1 day</td></tr>
+</table>
+
+<canvas id="recordChart" width="600" height="600"></canvas>
+
+<script>
+const ctx = document.getElementById('recordChart').getContext('2d');
+const data = {
+  labels: ["Fever","Diabetes","Hypertension","Headache","Cold","Asthma"],
+  datasets:[{
+    label:'Cases by Diagnosis',
+    data:[3,2,2,1,1,1],
+    backgroundColor:['#36A2EB','#FF6384','#FFCE56','#4BC0C0','#9966FF','#FF9F40']
+  }]
+};
+new Chart(ctx,{
+  type:'doughnut',
+  data:data,
+  options: {
+    responsive: false, // uses canvas size
+    plugins: {
+      legend: {
+        position: 'right',
+        labels: {
+          font: {
+            size: 14 // increase legend font
+          }
+        }
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

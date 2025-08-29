@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Patient Report</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f9f9f9; }
+    h2 { color: #333; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #fff; }
+    table, th, td { border: 1px solid #ddd; }
+    th, td { padding: 10px; text-align: center; }
+    th { background: #4CAF50; color: white; }
+    .chart-container { width: 900px; margin-top: 40px; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0px 2px 8px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+
+<h2>Registered Patients Report</h2>
+
+<table>
+  <tr><th>Health ID</th><th>Name</th><th>Age</th><th>Gender</th><th>Contact</th><th>Address</th></tr>
+  <tr><td>P001</td><td>Rahim</td><td>45</td><td>Male</td><td>01711111111</td><td>Village A</td></tr>
+  <tr><td>P002</td><td>Ayesha</td><td>30</td><td>Female</td><td>01811111111</td><td>Village B</td></tr>
+  <tr><td>P003</td><td>Karim</td><td>60</td><td>Male</td><td>01911111111</td><td>Village C</td></tr>
+  <tr><td>P004</td><td>Fatima</td><td>25</td><td>Female</td><td>01722222222</td><td>Village A</td></tr>
+  <tr><td>P005</td><td>Hasan</td><td>50</td><td>Male</td><td>01822222222</td><td>Village B</td></tr>
+  <tr><td>P006</td><td>Salma</td><td>35</td><td>Female</td><td>01922222222</td><td>Village C</td></tr>
+  <tr><td>P007</td><td>Imran</td><td>40</td><td>Male</td><td>01733333333</td><td>Village D</td></tr>
+  <tr><td>P008</td><td>Rina</td><td>28</td><td>Female</td><td>01833333333</td><td>Village E</td></tr>
+  <tr><td>P009</td><td>Tanvir</td><td>55</td><td>Male</td><td>01933333333</td><td>Village D</td></tr>
+  <tr><td>P010</td><td>Ali</td><td>32</td><td>Male</td><td>01744444444</td><td>Village E</td></tr>
+</table>
+
+<div class="chart-container">
+  <canvas id="patientChart"></canvas>
+</div>
+
+<script>
+const ctx = document.getElementById('patientChart').getContext('2d');
+const data = {
+  labels: ["Male","Female"],
+  datasets: [{
+    label: "Patients by Gender",
+    data: [6,5],
+    backgroundColor: ['rgba(54, 162, 235, 0.6)','rgba(255, 99, 132, 0.6)']
+  }]
+};
+new Chart(ctx, { type:'pie', data: data, options:{ responsive:true, plugins:{ title:{ display:true, text:'Patient Distribution by Gender' }}}});
+</script>
+
+</body>
+</html>

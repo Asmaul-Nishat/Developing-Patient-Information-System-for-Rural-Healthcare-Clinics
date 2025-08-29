@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Appointment Report</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h2 { color: #333; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    table, th, td { border: 1px solid #ddd; }
+    th, td { padding: 10px; text-align: center; }
+    th { background-color: #4CAF50; color: white; }
+    .chart-container { width: 900px; margin-top: 40px; }
+  </style>
+</head>
+<body>
+  <h2>Appointment Summary</h2>
+
+  <table>
+    <tr><th>Patient ID</th><th>Doctor</th><th>Date</th><th>Time</th><th>Reason</th><th>Status</th></tr>
+    <tr><td>P001</td><td>Dr. Ali</td><td>2025-08-25</td><td>10:00 AM</td><td>Fever</td><td>Confirmed</td></tr>
+    <tr><td>P002</td><td>Dr. Sara</td><td>2025-08-25</td><td>11:30 AM</td><td>Checkup</td><td>Pending</td></tr>
+    <tr><td>P003</td><td>Dr. Ali</td><td>2025-08-26</td><td>09:00 AM</td><td>Diabetes</td><td>Completed</td></tr>
+    <tr><td>P004</td><td>Dr. Karim</td><td>2025-08-26</td><td>02:00 PM</td><td>Headache</td><td>Confirmed</td></tr>
+    <tr><td>P005</td><td>Dr. Sara</td><td>2025-08-27</td><td>10:30 AM</td><td>Blood Test</td><td>Pending</td></tr>
+    <tr><td>P006</td><td>Dr. Ali</td><td>2025-08-27</td><td>11:00 AM</td><td>Fever</td><td>Confirmed</td></tr>
+    <tr><td>P007</td><td>Dr. Karim</td><td>2025-08-28</td><td>09:30 AM</td><td>Checkup</td><td>Completed</td></tr>
+    <tr><td>P008</td><td>Dr. Sara</td><td>2025-08-28</td><td>10:00 AM</td><td>Vaccination</td><td>Confirmed</td></tr>
+    <tr><td>P009</td><td>Dr. Ali</td><td>2025-08-29</td><td>03:00 PM</td><td>Diabetes</td><td>Pending</td></tr>
+    <tr><td>P010</td><td>Dr. Karim</td><td>2025-08-29</td><td>04:00 PM</td><td>Blood Pressure</td><td>Confirmed</td></tr>
+  </table>
+
+  <div class="chart-container">
+    <canvas id="appointmentChart"></canvas>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('appointmentChart').getContext('2d');
+    const data = {
+      labels: ["Dr. Ali","Dr. Sara","Dr. Karim"],
+      datasets: [{
+        label: 'Appointments per Doctor',
+        data: [4,3,3],
+        backgroundColor: ['rgba(75, 192, 192, 0.6)','rgba(255, 206, 86, 0.6)','rgba(54, 162, 235, 0.6)']
+      }]
+    };
+    new Chart(ctx, { type: 'bar', data: data, options: { responsive:true } });
+  </script>
+</body>
+</html>

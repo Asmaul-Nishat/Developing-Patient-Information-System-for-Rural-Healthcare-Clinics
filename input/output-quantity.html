@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Medical Stock Report</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<h2>Medical Stock</h2>
+
+<table border="1" cellpadding="8">
+<tr><th>Medicine Name</th><th>Batch No</th><th>Quantity</th><th>Expiry Date</th></tr>
+<tr><td>Paracetamol 500mg</td><td>B001</td><td>120</td><td>Dec-2025</td></tr>
+<tr><td>Amoxicillin 250mg</td><td>B002</td><td>80</td><td>Jan-2026</td></tr>
+<tr><td>Ibuprofen 200mg</td><td>B003</td><td>100</td><td>Nov-2025</td></tr>
+<tr><td>Metformin 500mg</td><td>B004</td><td>60</td><td>Mar-2026</td></tr>
+<tr><td>Amlodipine 5mg</td><td>B005</td><td>50</td><td>Feb-2026</td></tr>
+<tr><td>Inhaler Asthma</td><td>B006</td><td>30</td><td>Aug-2026</td></tr>
+<tr><td>Antihistamine</td><td>B007</td><td>40</td><td>Jan-2026</td></tr>
+<tr><td>Vaccines DPT</td><td>B008</td><td>25</td><td>Dec-2025</td></tr>
+<tr><td>Paracetamol 250mg</td><td>B009</td><td>70</td><td>Nov-2025</td></tr>
+<tr><td>Ibuprofen 400mg</td><td>B010</td><td>50</td><td>Jan-2026</td></tr>
+</table>
+
+<canvas id="stockChart" width="500" height="300"></canvas>
+
+<script>
+const ctx = document.getElementById('stockChart').getContext('2d');
+const data = {
+  labels: ["Paracetamol 500mg","Amoxicillin","Ibuprofen 200mg","Metformin","Amlodipine","Inhaler Asthma","Antihistamine","Vaccines DPT","Paracetamol 250mg","Ibuprofen 400mg"],
+  datasets:[{
+    label:'Quantity',
+    data:[120,80,100,60,50,30,40,25,70,50],
+    backgroundColor:'rgba(54,162,235,0.6)'
+  }]
+};
+
+new Chart(ctx, {
+  type:'bar',
+  data:data,
+  options: {
+    responsive: false, // keep chart size fixed
+    plugins: {
+      legend: {
+        display: false // optional: hide legend to save space
+      }
+    },
+    scales: {
+      x: {
+        ticks: {
+          font: { size: 12 } // smaller x-axis labels
+        }
+      },
+      y: {
+        ticks: {
+          font: { size: 12 } // smaller y-axis labels
+        },
+        beginAtZero: true
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
